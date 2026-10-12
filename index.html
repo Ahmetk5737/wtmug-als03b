@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hava Durumu PWA</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+</head>
+<body id="appBody" class="weather-default">
+    <div class="app-container">
+        <!-- Üst Bilgi ve Tema Değiştirici -->
+        <header class="header">
+            <h1>Hava Durumu</h1>
+            <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()">☀️ Açık Mod</button>
+        </header>
+
+        <!-- Çevrimdışı Uyarı Banner -->
+        <div id="offlineBanner" class="offline-banner" style="display: none;">
+            ⚠️ İnternet bağlantınız yok! Çevrimdışısınız.
+        </div>
+
+        <!-- Arama ve Konum Çubuğu -->
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" id="cityInput" placeholder="Şehir adı yazın (örn. İstanbul)..." autocomplete="off">
+                <button onclick="searchCity()">Ara</button>
+            </div>
+            <button class="location-btn" onclick="getLocationWeather()">📍 Konumumu Kullan</button>
+        </div>
+
+        <!-- Hata Mesajı Alanı -->
+        <div id="errorBox" class="error-box" style="display: none;"></div>
+
+        <!-- Yükleniyor Durumu -->
+        <div id="loadingBox" class="loading-box" style="display: none;">Hava durumu bilgileri yükleniyor...</div>
+
+        <!-- Ana Hava Durumu Kartı -->
+        <section class="card current-card" id="currentWeatherCard" style="display: none;">
+            <div class="current-header">
+                <h2 id="cityNameDisplay">-</h2>
+                <span id="updateTimeDisplay" class="update-time">-</span>
+            </div>
+            <div class="current-main">
+                <div class="temp-box">
+                    <span id="currentTemp">-</span><span class="unit">°C</span>
+                </div>
+                <!-- Hareketli İkon ve Durum Alanı -->
+                <div class="condition-box">
+                    <div id="weatherIconAnim" class="weather-icon-anim">☀️</div>
+                    <span id="weatherCondition" class="condition-text">-</span>
+                </div>
+            </div>
+            <div class="details-grid">
+                <div class="detail-item">
+                    <span>Nem</span>
+                    <strong id="humidityDisplay">-%</strong>
+                </div>
+                <div class="detail-item">
+                    <span>Rüzgâr Hızı</span>
+                    <strong id="windDisplay">- km/s</strong>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5 Günlük Tahmin Bölümü -->
+        <section class="card forecast-card" id="forecastCard" style="display: none;">
+            <h3>5 Günlük Tahmin</h3>
+            <div id="forecastContainer" class="forecast-list">
+                <!-- Dinamik dolacak -->
+            </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(err => console.log('SW Hata:', err));
+            });
+        }
+    </script>
+</body>
+</html>
